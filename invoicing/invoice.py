@@ -5,7 +5,19 @@ import os
 from pathlib import Path
 
 
-def generate(invoices_path, pdfs_path, image_path, col1, col2, col3, col4, company_name):
+def generate(invoices_path, pdfs_path, image_path, col1, col2, col3, col4, col5, company_name):
+    """
+    This function converts invoice excel files into PDF invoces.
+    :param invoices_path: Path to the folder with invoices
+    :param pdfs_path: Path to the folder where PDF invoices will be saved
+    :param image_path: Path to the company logo
+    :param col1: Name of the first column in the invoice
+    :param col2: Name of the second column in the invoice
+    :param col3: Name of the third column in the invoice
+    :param col4: Name of the fourth column in the invoice
+    :param company_name: Name of the company
+    :return: None
+    """
     filepaths = glob.glob(f"{invoices_path}/*.xlsx")
     for filepath in filepaths:
 
@@ -62,5 +74,6 @@ def generate(invoices_path, pdfs_path, image_path, col1, col2, col3, col4, compa
         pdf.cell(w=30, h=8, txt=f"{company_name}")
         pdf.image(image_path, w=10)
 
-        os.makedir(pdfs_path)
+        if not os.path.exists(pdfs_path):  
+            os.makedirs(pdfs_path)
         pdf.output(f"{pdfs_path}/{filename}.pdf")
